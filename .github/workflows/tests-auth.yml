@@ -1,0 +1,15 @@
+name: tests-auth
+
+on:
+  pull_request
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: tests-auth
+        run: |
+          cd auth && npm install && npm run test:ci
+        env:
+          JWT_KEY: ${{secrets.JWT_KEY}}
