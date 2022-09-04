@@ -9,26 +9,38 @@ declare global {
 
 let mongo: any;
 
-jest.setTimeout(10000);
+jest.setTimeout(30000);
 
 beforeAll(async () => {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     mongo = await MongoMemoryServer.create();
     const mongoUri = mongo.getUri();
 
     await mongoose.connect(mongoUri, {});
 });
 
-beforeEach(async () => {
-    // reset data before test
-    const collections = await mongoose.connection.db.collections();
+// beforeEach(async () => {
+//     // reset data before test
+//     const collections = await mongoose.connection.db.collections();
 
-    for (let collection of collections) {
+//     for (let collection of collections) {
+//         await collection.deleteMany({});
+//     }
+// });
+
+beforeEach(async () => {
+    jest.clearAllMocks();
+    const collections = await mongoose.connection.collections;
+
+    for (const key in collections) {
+        const collection = collections[key];
         await collection.deleteMany({});
     }
 });
 
 afterAll(async () => {
     await mongo.stop();
+    await mongoose.connection.close();
 });
 
 global.signin = async () => {
