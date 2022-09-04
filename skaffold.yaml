@@ -1,0 +1,58 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  googleCloudBuild:
+    projectId: abiding-lead-351407
+  artifacts:
+    - image: us.gcr.io/abiding-lead-351407/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync: 
+        manual:
+          - src: 'src/**/*.ts' 
+            dest: . 
+    - image: us.gcr.io/abiding-lead-351407/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync: 
+        manual:
+          - src: '**/*.js' 
+            dest: . 
+    - image: us.gcr.io/abiding-lead-351407/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync: 
+        manual:
+          - src: 'src/**/*.ts' 
+            dest: . 
+    - image: us.gcr.io/abiding-lead-351407/orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync: 
+        manual:
+          - src: 'src/**/*.ts' 
+            dest: . 
+    - image: us.gcr.io/abiding-lead-351407/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync: 
+        manual:
+          - src: 'src/**/*.ts' 
+            dest: . 
+    - image: us.gcr.io/abiding-lead-351407/payments
+      context: payments
+      docker:
+        dockerfile: Dockerfile
+      sync: 
+        manual:
+          - src: 'src/**/*.ts' 
+            dest: . 
