@@ -1,4 +1,4 @@
-name: Tests
+name: tests-auth
 
 on:
   pull_request
@@ -8,9 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Test
+      - name: tests-auth
         run: |
           cd auth && npm install && npm run test:ci
         env:
           JWT_KEY: ${{secrets.JWT_KEY}}
-          STRIPE_KEY: ${{secrets.STRIPE_KEY}}
