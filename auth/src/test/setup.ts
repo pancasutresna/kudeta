@@ -8,6 +8,9 @@ declare global {
 }
 
 let mongo: any;
+
+jest.setTimeout(30000);
+
 beforeAll(async () => {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     mongo = await MongoMemoryServer.create();
