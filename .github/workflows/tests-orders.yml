@@ -1,0 +1,16 @@
+name: tests-orders
+
+on:
+  pull_request
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: tests-orders
+        run: |
+          cd orders && npm install && npm run test:ci
+        env:
+          JWT_KEY: ${{secrets.JWT_KEY}}
+          STRIPE_KEY: ${{secrets.STRIPE_KEY}}
