@@ -13,4 +13,3 @@ jobs:
           cd orders && npm install && npm run test:ci
         env:
           JWT_KEY: ${{secrets.JWT_KEY}}
-          STRIPE_KEY: ${{secrets.STRIPE_KEY}}
