@@ -12,6 +12,7 @@ let mongo: any;
 jest.setTimeout(10000);
 
 beforeAll(async () => {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     mongo = await MongoMemoryServer.create();
     const mongoUri = mongo.getUri();
 
@@ -29,6 +30,7 @@ beforeEach(async () => {
 
 afterAll(async () => {
     await mongo.stop();
+    await mongoose.connection.close();
 });
 
 global.signin = async () => {

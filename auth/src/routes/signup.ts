@@ -22,8 +22,6 @@ router.post(
 
         if (existingUser) {
             throw new BadRequestError('Email in use');
-            //console.log('Email in use');
-            // return res.send({});
         }
 
         // Create user and save to database
