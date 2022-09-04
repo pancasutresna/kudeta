@@ -21,19 +21,30 @@ beforeAll(async () => {
     await mongoose.connect(mongoUri, {});
 });
 
+// beforeEach(async () => {
+//     jest.clearAllMocks();
+
+//     // reset data before test
+//     const collections = await mongoose.connection.db.collections();
+
+//     for (let collection of collections) {
+//         await collection.deleteMany({});
+//     }
+// });
+
 beforeEach(async () => {
     jest.clearAllMocks();
+    const collections = await mongoose.connection.collections;
 
-    // reset data before test
-    const collections = await mongoose.connection.db.collections();
-
-    for (let collection of collections) {
+    for (const key in collections) {
+        const collection = collections[key];
         await collection.deleteMany({});
     }
 });
 
 afterAll(async () => {
     await mongo.stop();
+    await mongoose.connection.close();
 });
 
 global.signin = () => {
