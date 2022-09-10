@@ -13,7 +13,7 @@ import { indexOrderRouter } from './routes';
 // console.log('======================');
 // console.log('NODE_ENV : ' + process.env.NODE_ENV);
 
-const app = express();
+const app = express().disable('x-powered-by');
 app.set('trust proxy', true);
 app.use(json());
 app.use(

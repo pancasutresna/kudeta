@@ -1,5 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 import express, { Request, Response } from 'express';
+import { body } from 'express-validator';
 import {
     BadRequestError,
     NotFoundError,
@@ -7,7 +8,7 @@ import {
     requireAuth,
     validateRequest,
 } from '@kudeta.app/common';
-import { body } from 'express-validator';
+
 import { Ticket } from '../models/ticket';
 import { Order } from '../models/order';
 import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
@@ -24,6 +25,8 @@ router.post(
         body('ticketId')
             .not()
             .isEmpty()
+            .trim()
+            .escape()
             //check for mongodb ID format, assuming other services also built using mongodb database
             .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
             .withMessage('TicketId must be provided'),
@@ -71,6 +74,7 @@ router.post(
             },
         });
 
+        // file deepcode ignore XSS: ticketId is already filtered in line using express-validator
         res.status(201).send(order);
     }
 );
