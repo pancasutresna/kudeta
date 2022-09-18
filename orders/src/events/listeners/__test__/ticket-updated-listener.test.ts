@@ -1,26 +1,26 @@
 import mongoose from 'mongoose';
-import { TicketUpdatedEvent } from '@kudeta.app/common';
-import { TicketUpdatedListener } from '../ticket-updated-listener';
+import { TokenUpdatedEvent } from '@kudeta.app/common';
+import { TokenUpdatedListener } from '../token-updated-listener';
 import { natsWrapper } from '../../../nats-wrapper';
-import { Ticket } from '../../../models/ticket';
+import { Token } from '../../../models/token';
 
 const setup = async () => {
     // Create a listener
-    const listener = new TicketUpdatedListener(natsWrapper.client);
+    const listener = new TokenUpdatedListener(natsWrapper.client);
 
-    // Create and save a ticket
-    const ticket = Ticket.build({
+    // Create and save a token
+    const token = Token.build({
         id: new mongoose.Types.ObjectId().toHexString(),
         title: 'concert',
         price: 20,
     });
 
-    await ticket.save();
+    await token.save();
 
     // crate a fake data object
-    const data: TicketUpdatedEvent['data'] = {
-        id: ticket.id,
-        version: ticket.version + 1,
+    const data: TokenUpdatedEvent['data'] = {
+        id: token.id,
+        version: token.version + 1,
         title: 'new concert',
         price: 999,
         userId: 'abcdfg',
@@ -33,22 +33,22 @@ const setup = async () => {
     };
 
     // return all of this stuff
-    return { msg, data, ticket, listener };
+    return { msg, data, token, listener };
 };
 
-it('finds, updates, and saves a ticket', async () => {
-    const { msg, data, ticket, listener } = await setup();
+it('finds, updates, and saves a token', async () => {
+    const { msg, data, token, listener } = await setup();
 
     await listener.onMessage(data, msg);
 
-    const updatedTicket = await Ticket.findById(ticket.id);
-    expect(updatedTicket!.title).toEqual(data.title);
-    expect(updatedTicket!.price).toEqual(data.price);
-    expect(updatedTicket!.version).toEqual(data.version);
+    const updatedToken = await Token.findById(token.id);
+    expect(updatedToken!.title).toEqual(data.title);
+    expect(updatedToken!.price).toEqual(data.price);
+    expect(updatedToken!.version).toEqual(data.version);
 });
 
 it('acks the message', async () => {
-    const { msg, data, ticket, listener } = await setup();
+    const { msg, data, token, listener } = await setup();
 
     await listener.onMessage(data, msg);
 
@@ -56,7 +56,7 @@ it('acks the message', async () => {
 });
 
 it('does not call ack if the event has a skipped version number', async () => {
-    const { msg, data, listener, ticket } = await setup();
+    const { msg, data, listener, token } = await setup();
 
     data.version = 10;
 

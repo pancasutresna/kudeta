@@ -9,7 +9,7 @@ import {
     validateRequest,
 } from '@kudeta.app/common';
 
-import { Ticket } from '../models/ticket';
+import { Token } from '../models/token';
 import { Order } from '../models/order';
 import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
 import { natsWrapper } from '../nats-wrapper';
@@ -22,28 +22,28 @@ router.post(
     '/api/orders',
     requireAuth,
     [
-        body('ticketId')
+        body('tokenId')
             .not()
             .isEmpty()
             .trim()
             .escape()
             //check for mongodb ID format, assuming other services also built using mongodb database
             .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
-            .withMessage('TicketId must be provided'),
+            .withMessage('TokenId must be provided'),
     ],
     validateRequest,
     async (req: Request, res: Response) => {
-        // Find the ticket the user is trying to order in the database
-        const { ticketId } = req.body;
-        const ticket = await Ticket.findById(ticketId);
-        if (!ticket) {
+        // Find the token the user is trying to order in the database
+        const { tokenId } = req.body;
+        const token = await Token.findById(tokenId);
+        if (!token) {
             throw new NotFoundError();
         }
 
-        // Make sure that this ticket is not already reserved
-        const isReserved = await ticket.isReserved();
+        // Make sure that this token is not already reserved
+        const isReserved = await token.isReserved();
         if (isReserved) {
-            throw new BadRequestError('Ticket is already reserved');
+            throw new BadRequestError('Token is already reserved');
         }
 
         // Calculate expiration date for this order
@@ -57,7 +57,7 @@ router.post(
             userId: req.currentUser!.id,
             status: OrderStatus.Created,
             expiresAt: expiration,
-            ticket: ticket,
+            token: token,
         });
         await order.save();
 
@@ -68,13 +68,13 @@ router.post(
             status: order.status,
             userId: order.userId,
             expiresAt: order.expiresAt.toISOString(),
-            ticket: {
-                id: ticket.id,
-                price: ticket.price,
+            token: {
+                id: token.id,
+                price: token.price,
             },
         });
 
-        // file deepcode ignore XSS: ticketId is already filtered in line using express-validator
+        // file deepcode ignore XSS: tokenId is already filtered in line using express-validator
         res.status(201).send(order);
     }
 );

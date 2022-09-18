@@ -1,7 +1,7 @@
 import { ExpirationCompleteListener } from '../expiration-complete-listener';
 import { natsWrapper } from '../../../nats-wrapper';
 import { Order } from '../../../models/order';
-import { Ticket } from '../../../models/ticket';
+import { Token } from '../../../models/token';
 import mongoose from 'mongoose';
 import { OrderStatus, ExpirationCompleteEvent } from '@kudeta.app/common';
 import { Message } from 'node-nats-streaming';
@@ -10,19 +10,19 @@ import { OrderCreatedPublisher } from '../../publishers/order-created-publisher'
 const setup = async () => {
     const listener = new ExpirationCompleteListener(natsWrapper.client);
 
-    const ticket = Ticket.build({
+    const token = Token.build({
         id: new mongoose.Types.ObjectId().toHexString(),
         title: 'concert',
         price: 20,
     });
 
-    await ticket.save();
+    await token.save();
 
     const order = Order.build({
         userId: 'asdf',
         status: OrderStatus.Created,
         expiresAt: new Date(),
-        ticket,
+        token,
     });
     await order.save();
 
@@ -36,7 +36,7 @@ const setup = async () => {
         ack: jest.fn(),
     };
 
-    return { listener, order, ticket, data, msg };
+    return { listener, order, token, data, msg };
 };
 
 it('updates the order status to cancelled', async () => {
