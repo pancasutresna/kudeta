@@ -1,16 +1,16 @@
 import mongoose from 'mongoose';
-import { TicketCreatedEvent } from '@kudeta.app/common';
-import { TicketCreatedListener } from '../ticket-created-listener';
+import { TokenCreatedEvent } from '@kudeta.app/common';
+import { TokenCreatedListener } from '../token-created-listener';
 import { natsWrapper } from '../../../nats-wrapper';
 import { Message } from 'node-nats-streaming';
-import { Ticket } from '../../../models/ticket';
+import { Token } from '../../../models/token';
 
 const setup = async () => {
     // create an instance of the listener
-    const listener = new TicketCreatedListener(natsWrapper.client);
+    const listener = new TokenCreatedListener(natsWrapper.client);
 
     // create a fake data event
-    const data: TicketCreatedEvent['data'] = {
+    const data: TokenCreatedEvent['data'] = {
         id: new mongoose.Types.ObjectId().toHexString(),
         version: 0,
         title: 'concert',
@@ -27,18 +27,18 @@ const setup = async () => {
     return { listener, data, msg };
 };
 
-it('creates and saves a ticket', async () => {
+it('creates and saves a token', async () => {
     const { listener, data, msg } = await setup();
 
     // call the onMessage function with the data object + message object
     await listener.onMessage(data, msg);
 
-    // write assertions to make sure a ticket was created!
-    const ticket = await Ticket.findById(data.id);
+    // write assertions to make sure a token was created!
+    const token = await Token.findById(data.id);
 
-    expect(ticket!).toBeDefined();
-    expect(ticket!.title).toEqual(data.title);
-    expect(ticket!.price).toEqual(data.price);
+    expect(token!).toBeDefined();
+    expect(token!.title).toEqual(data.title);
+    expect(token!.price).toEqual(data.price);
 });
 
 it('acks the message', async () => {

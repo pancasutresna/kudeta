@@ -1,0 +1,17 @@
+name: tests-tokens
+
+on:
+  pull_request:
+    paths:
+      - 'tokens/**'
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: tests-tokens
+        run: |
+          cd tokens && npm install && npm run test:ci
+        env:
+          JWT_KEY: ${{secrets.JWT_KEY}}
