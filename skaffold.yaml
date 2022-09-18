@@ -24,8 +24,8 @@ build:
         manual:
           - src: '**/*.js' 
             dest: . 
-    - image: us.gcr.io/abiding-lead-351407/tickets
-      context: tickets
+    - image: us.gcr.io/abiding-lead-351407/tokens
+      context: tokens
       docker:
         dockerfile: Dockerfile
       sync: 

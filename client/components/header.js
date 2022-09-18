@@ -4,7 +4,7 @@ export default ({ currentUser }) => {
     const links = [
         !currentUser && { label: 'Sign Up', href: '/auth/signup' },
         !currentUser && { label: 'Sign In', href: '/auth/signin' },
-        currentUser && { label: 'Sell TIckets', href: '/tickets/new' },
+        currentUser && { label: 'Sell Tokens', href: '/tokens/new' },
         currentUser && { label: 'My Orders', href: '/orders' },
         currentUser && { label: 'Sign Out', href: '/auth/signout' },
     ]

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 import { OrderStatus } from '@kudeta.app/common';
-import { TicketDoc } from './ticket';
+import { TokenDoc } from './token';
 
 export { OrderStatus };
 
@@ -9,14 +9,14 @@ interface OrderAttrs {
     userId: string;
     status: OrderStatus;
     expiresAt: Date;
-    ticket: TicketDoc;
+    token: TokenDoc;
 }
 
 interface OrderDoc extends mongoose.Document {
     userId: string;
     status: OrderStatus;
     expiresAt: Date;
-    ticket: TicketDoc;
+    token: TokenDoc;
     version: number;
 }
 
@@ -39,9 +39,9 @@ const orderSchema = new mongoose.Schema(
         expiresAt: {
             type: mongoose.Schema.Types.Date,
         },
-        ticket: {
+        token: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Ticket',
+            ref: 'Token',
         },
     },
     {
