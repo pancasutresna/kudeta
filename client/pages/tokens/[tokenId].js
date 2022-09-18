@@ -2,12 +2,12 @@ import Router from 'next/router';
 
 import useRequest from '../../hooks/use-request';
 
-const TicketShow = ({ ticket }) => {
+const TokenShow = ({ token }) => {
     const { doRequest, errors } = useRequest({
         url: '/api/orders/',
         method: 'post',
         body: {
-            ticketId: ticket.id,
+            tokenId: token.id,
         },
         onSuccess: (order) =>
             Router.push('/orders/[orderId]', `/orders/${order.id}`),
@@ -15,8 +15,8 @@ const TicketShow = ({ ticket }) => {
 
     return (
         <div>
-            <h1>{ticket.title}</h1>
-            <h4>{ticket.price}</h4>
+            <h1>{token.title}</h1>
+            <h4>{token.price}</h4>
             {errors}
             <button onClick={() => doRequest()} className="btn btn-primary">
                 Purchase
@@ -25,11 +25,11 @@ const TicketShow = ({ ticket }) => {
     );
 };
 
-TicketShow.getInitialProps = async (context, client) => {
-    const { ticketId } = context.query;
-    const { data } = await client.get(`/api/tickets/${ticketId}`);
+TokenShow.getInitialProps = async (context, client) => {
+    const { tokenId } = context.query;
+    const { data } = await client.get(`/api/tokens/${tokenId}`);
 
-    return { ticket: data };
+    return { token: data };
 };
 
-export default TicketShow;
+export default TokenShow;

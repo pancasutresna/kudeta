@@ -1,16 +1,13 @@
 import Link from 'next/link';
 
-const LandingPage = ({ currentUser, tickets }) => {
-    const ticketList = tickets.map((ticket) => {
+const LandingPage = ({ currentUser, tokens }) => {
+    const tokenList = tokens.map((token) => {
         return (
-            <tr key={ticket.id}>
-                <td>{ticket.title}</td>
-                <td>{ticket.price}</td>
+            <tr key={token.id}>
+                <td>{token.title}</td>
+                <td>{token.price}</td>
                 <td>
-                    <Link
-                        href="/tickets/[ticketId]"
-                        as={`/tickets/${ticket.id}`}
-                    >
+                    <Link href="/tokens/[tokenId]" as={`/tokens/${token.id}`}>
                         <a>View</a>
                     </Link>
                 </td>
@@ -20,7 +17,7 @@ const LandingPage = ({ currentUser, tickets }) => {
 
     return (
         <div>
-            <h1>Tickets</h1>
+            <h1>Tokens</h1>
             <table className="table">
                 <thead>
                     <tr>
@@ -29,7 +26,7 @@ const LandingPage = ({ currentUser, tickets }) => {
                         <th>Link</th>
                     </tr>
                 </thead>
-                <tbody>{ticketList}</tbody>
+                <tbody>{tokenList}</tbody>
             </table>
         </div>
     );
@@ -42,9 +39,9 @@ const LandingPage = ({ currentUser, tickets }) => {
 };
 
 LandingPage.getInitialProps = async (context, client, currentUser) => {
-    const { data } = await client.get('/api/tickets');
+    const { data } = await client.get('/api/tokens');
 
-    return { tickets: data };
+    return { tokens: data };
 };
 
 export default LandingPage;

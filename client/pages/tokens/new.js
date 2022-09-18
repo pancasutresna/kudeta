@@ -2,17 +2,17 @@ import { useState } from 'react';
 import useRequest from '../../hooks/use-request';
 import Router from 'next/router';
 
-const NewTicket = () => {
+const NewToken = () => {
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState('');
     const { doRequest, errors } = useRequest({
-        url: '/api/tickets',
+        url: '/api/tokens',
         method: 'post',
         body: {
             title,
             price,
         },
-        onSuccess: (ticket) => Router.push('/'),
+        onSuccess: (token) => Router.push('/'),
     });
 
     const onSubmit = (event) => {
@@ -33,7 +33,7 @@ const NewTicket = () => {
 
     return (
         <div>
-            <h1>Create a Ticket</h1>
+            <h1>Create a Token</h1>
             <form onSubmit={onSubmit}>
                 <div className="form-group">
                     <label>Title</label>
@@ -59,4 +59,4 @@ const NewTicket = () => {
     );
 };
 
-export default NewTicket;
+export default NewToken;
