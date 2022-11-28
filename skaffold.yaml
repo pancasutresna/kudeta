@@ -5,10 +5,10 @@ deploy:
     manifests:
       - ./infra/k8s/*
 build:
-  googleCloudBuild:
-    projectId: abiding-lead-351407
+  local:
+    push: false
   artifacts:
-    - image: us.gcr.io/abiding-lead-351407/auth
+    - image: kudetaapp/auth
       context: auth
       docker:
         dockerfile: Dockerfile
@@ -16,7 +16,7 @@ build:
         manual:
           - src: 'src/**/*.ts' 
             dest: . 
-    - image: us.gcr.io/abiding-lead-351407/client
+    - image: kudetaapp/client
       context: client
       docker:
         dockerfile: Dockerfile
@@ -24,7 +24,7 @@ build:
         manual:
           - src: '**/*.js' 
             dest: . 
-    - image: us.gcr.io/abiding-lead-351407/tickets
+    - image: kudetaapp/tickets
       context: tickets
       docker:
         dockerfile: Dockerfile
@@ -32,7 +32,7 @@ build:
         manual:
           - src: 'src/**/*.ts' 
             dest: . 
-    - image: us.gcr.io/abiding-lead-351407/orders
+    - image: kudetaapp/orders
       context: orders
       docker:
         dockerfile: Dockerfile
@@ -40,7 +40,7 @@ build:
         manual:
           - src: 'src/**/*.ts' 
             dest: . 
-    - image: us.gcr.io/abiding-lead-351407/expiration
+    - image: kudetaapp/expiration
       context: expiration
       docker:
         dockerfile: Dockerfile
@@ -48,7 +48,7 @@ build:
         manual:
           - src: 'src/**/*.ts' 
             dest: . 
-    - image: us.gcr.io/abiding-lead-351407/payments
+    - image: kudetaapp/payments
       context: payments
       docker:
         dockerfile: Dockerfile

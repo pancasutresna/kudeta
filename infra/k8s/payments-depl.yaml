@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: payments
-          image: us.gcr.io/abiding-lead-351407/payments
+          image: kudetaapp/payments
           env:
             - name: NATS_CLIENT_ID
               valueFrom:

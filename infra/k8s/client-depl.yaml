@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: us.gcr.io/abiding-lead-351407/client
+          image: kudetaapp/client
 ---
 apiVersion: v1
 kind: Service
