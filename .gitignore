@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# Project folders
+/.idea
+/bin
+/build
+
+# Environment Files
+.env
