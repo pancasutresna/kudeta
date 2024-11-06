@@ -1,2 +1,0 @@
-/home/panca/Projects/kudeta/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/panca/Projects/kudeta/cmake-build-debug/CMakeFiles/rebuild_cache.dir
